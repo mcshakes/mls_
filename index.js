@@ -1,4 +1,4 @@
-const input = [
+const input1 = [
     {
       "data_name": "ga_fmls",
       "vendor_id": "76257",
@@ -22,7 +22,7 @@ const input = [
     }
   ]
   
-  function homeData(name, id, street, city, state, zip, price, date, rooms, fullBaths, halfBaths, size) {
+function homeData(name, id, street, city, state, zip, price, date, rooms, fullBaths, halfBaths, size) {
     this.mls_name = name;
     this.mls_id = id;
     this.street_address = address;
@@ -34,11 +34,9 @@ const input = [
     this.bedrooms = rooms;
     this.full_baths = fullBaths;
     this.half_baths = halfBaths;
-    this.size = size;
+    this.size = size;  
+}
   
-  }
-  
-  // Goes through array and separates each home object out
 function mapEachHome(inputArr) {
     inputArr.map(homeObj => {
         searchItemProp(homeObj)        
@@ -46,43 +44,80 @@ function mapEachHome(inputArr) {
 }
   
 function searchItemProp(data) {
-
     Object.keys(data).forEach(key => {
         if (typeof data[key] === "object") {
-            console.log(" ")
-            // console.log("A nested object so we go again: ", data[key])
             searchItemProp(data[key])
-            console.log(" ")
         } else {            
-            x = getValueByObjKey(data)
-            console.log(x)
+            getValueByObjKey(data)
         }
     })
-
 }
 
-details = []
 
 function getValueByObjKey(obj) {
 
-    let fullBath = "bath"
-    let half =  "half"
-
-    let fullBathRegex = new RegExp(fullBath, "i")
-    let halfBathRegex = new RegExp(half, "i")
+    homeDetails = new Map()
 
     for (let prop in obj) {
-        if (prop.match(halfBathRegex)) {
-            return prop
-        }
 
-        // if (prop.match(fullBathRegex)) {
-        //     details.push(prop)
-        //     break
-        // }
+        if (typeof obj[prop] !== "object") {
+            if (prop.includes("name") && !prop.includes("street")) {
+                homeDetails.set("mls_name", obj[prop])
+            }
+    
+            if (prop.includes("id")) {
+                homeDetails.set("mls_id", obj[prop])
+            }
+            
+            if (prop.includes("address")) {  
+                homeDetails.set("street_address", obj[prop])   //
+            }
+
+            if (prop.includes("city")) {
+                homeDetails.set("city", obj[prop])
+            }
+
+            if (prop.includes("state")) {
+                homeDetails.set("state", obj[prop])
+            }
+
+            if (prop.includes("zip")) {
+                homeDetails.set("zip_code", obj[prop])
+            }
+
+            if (prop.includes("price") || prop.includes("list")) {
+                homeDetails.set("list_price", obj[prop])
+            }
+
+            if (prop.includes("date")) {
+                homeDetails.set("list_date", obj[prop])
+            }
+
+            if (prop.includes("bed")) {
+                homeDetails.set("bedrooms", obj[prop])
+            }
+    
+            if (prop.includes("bath") && !prop.includes("half")) {
+                homeDetails.set("full_baths", obj[prop])
+            }
+    
+            if (prop.includes("half")) {
+                homeDetails.set("half_baths", obj[prop])
+            }
+
+            if (prop.includes("square_feet")) {
+                homeDetails.set("size", obj[prop])
+            }
+        
+        }
+            
     }
     
-    // console.log(details)
+    return homeDetails
 }
 
-mapEachHome(input)
+function buildJSON() {
+
+}
+
+mapEachHome(input1)
