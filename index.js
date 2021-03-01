@@ -19,6 +19,25 @@ const input1 = {
         "square_feet": "2300"
       }
     }
+
+const input2 = {
+    "name": "ncsc_cmls",
+    "id": "53728",
+    "geo": {
+      "address": "256 Old Mill",
+      "city": "Charlotte",
+      "state": "NC",
+      "zip": "28269"
+    },
+    "listing": {
+      "price": "299,999.00",
+      "bedrooms": "4",
+      "bathrooms": "3",
+      "square_feet": "1975"
+    },
+    "created": "2018-05-14 03:00:00 EST"
+  }
+
   
 function homeData(name, id, street, city, state, zip, price, date, rooms, fullBaths, halfBaths, size) {
     this.mls_name = name;
@@ -133,4 +152,4 @@ function buildJSON(input) {
     console.log(renamed)
 }
 
-buildJSON(input1)
+buildJSON(input2)
