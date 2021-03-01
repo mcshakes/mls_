@@ -36,87 +36,101 @@ function homeData(name, id, street, city, state, zip, price, date, rooms, fullBa
 }
   
 
-
-
 function flattenHomeObject(obj) {
     const flattened = {}
 
     Object.keys(obj).forEach((key) => {
         if (typeof obj[key] === 'object' && obj[key] !== null) {
 
-        Object.assign(flattened, flattenHomeObject(obj[key]))
+            Object.assign(flattened, flattenHomeObject(obj[key]))
 
         } else {
             flattened[key] = obj[key]
         }
     })
 
-    console.log(flattened)
+    return flattened
 }
 
 function mapValueToObjKey(obj) {
-    console.log(obj)
-    // mapObj = new Map()
+    let mapObj = new Map()
 
-    // for (let prop in obj) {
+    for (let prop in obj) {
 
-    //     if (typeof obj[prop] !== "object") {
-    //         if (prop.includes("name") && !prop.includes("street")) {
-    //             mapObj.set("mls_name", obj[prop])
-    //         }
+        if (typeof obj[prop] !== "object") {
+            if (prop.includes("name") && !prop.includes("street")) {
+                mapObj.set("mls_name", obj[prop])
+            }
     
-    //         if (prop.includes("id")) {
-    //             mapObj.set("mls_id", obj[prop])
-    //         }
+            if (prop.includes("id")) {
+                mapObj.set("mls_id", obj[prop])
+            }
             
-    //         if (prop.includes("address")) {  
-    //             mapObj.set("street_address", obj[prop])
-    //         }
+            if (prop.includes("address")) {
+                let cleaned = cleanAddress(obj[prop]);
+                mapObj.set("street_address", cleaned)
+            }
 
-    //         if (prop.includes("city")) {
-    //             mapObj.set("city", obj[prop])
-    //         }
+            if (prop.includes("city")) {
+                mapObj.set("city", obj[prop])
+            }
 
-    //         if (prop.includes("state")) {
-    //             mapObj.set("state", obj[prop])
-    //         }
+            if (prop.includes("state")) {
+                mapObj.set("state", obj[prop])
+            }
 
-    //         if (prop.includes("zip")) {
-    //             mapObj.set("zip_code", obj[prop])
-    //         }
+            if (prop.includes("zip")) {
+                mapObj.set("zip_code", parseInt(obj[prop]))
+            }
 
-    //         if (prop.includes("price") || prop.includes("list")) {
-    //             mapObj.set("list_price", obj[prop])
-    //         }
+            if (prop.includes("price") || prop.includes("list")) {
+                let price = fixPrice(obj[prop])
+                mapObj.set("list_price", price)
+            }
 
-    //         if (prop.includes("date")) {
-    //             mapObj.set("list_date", obj[prop])
-    //         }
+            if (prop.includes("date") || prop.includes("created")) {
+                let date = normalizeDate(obj[prop])
+                mapObj.set("list_date", date)
+            }
 
-    //         if (prop.includes("bed")) {
-    //             mapObj.set("bedrooms", obj[prop])
-    //         }
+            if (prop.includes("bed")) {
+                mapObj.set("bedrooms", parseInt(obj[prop]))
+            }
     
-    //         if (prop.includes("bath") && !prop.includes("half")) {
-    //             mapObj.set("full_baths", obj[prop])
-    //         }
+            if (prop.includes("bath") && !prop.includes("half")) {
+                mapObj.set("full_baths", parseInt(obj[prop]))
+            }
     
-    //         if (prop.includes("half")) {
-    //             mapObj.set("half_baths", obj[prop])
-    //         }
+            if (prop.includes("half")) {
+                mapObj.set("half_baths", parseInt(obj[prop]))
+            }
 
-    //         if (prop.includes("square_feet")) {
-    //             mapObj.set("size", obj[prop])
-    //         }
+            if (prop.includes("square_feet")) {
+                mapObj.set("size", parseInt(obj[prop]))
+            }
         
-    //     }
-            
-    // }        
+        }            
+    }
+    
+    return mapObj;
+}
+
+function cleanAddress(addr) {
+    return addr.split(",")[0]
+}
+
+function normalizeDate(date) {
+    return Date.parse(date)
+}
+
+function fixPrice(price) {
+    return parseFloat(price.replace(/[^\d.]/g, ''))
 }
 
 function buildJSON(input) {
     let ans = flattenHomeObject(input)
-    console.log(ans)
+    let renamed = mapValueToObjKey(ans)
+    console.log(renamed)
 }
 
 buildJSON(input1)
