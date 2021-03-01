@@ -1,5 +1,4 @@
-const input1 = [
-    {
+const input1 = {
       "data_name": "ga_fmls",
       "vendor_id": "76257",
       "address_components": {
@@ -20,7 +19,6 @@ const input1 = [
         "square_feet": "2300"
       }
     }
-  ]
   
 function homeData(name, id, street, city, state, zip, price, date, rooms, fullBaths, halfBaths, size) {
     this.mls_name = name;
@@ -37,87 +35,88 @@ function homeData(name, id, street, city, state, zip, price, date, rooms, fullBa
     this.size = size;  
 }
   
-function mapEachHome(inputArr) {
-    inputArr.map(homeObj => {
-        searchItemProp(homeObj)        
-    })
-}
-  
-function searchItemProp(data) {
-    Object.keys(data).forEach(key => {
-        if (typeof data[key] === "object") {
-            searchItemProp(data[key])
-        } else {            
-            getValueByObjKey(data)
+
+
+
+function flattenHomeObject(obj) {
+    const flattened = {}
+
+    Object.keys(obj).forEach((key) => {
+        if (typeof obj[key] === 'object' && obj[key] !== null) {
+
+        Object.assign(flattened, flattenHomeObject(obj[key]))
+
+        } else {
+            flattened[key] = obj[key]
         }
     })
+
+    console.log(flattened)
 }
 
+function mapValueToObjKey(obj) {
+    console.log(obj)
+    // mapObj = new Map()
 
-function getValueByObjKey(obj) {
+    // for (let prop in obj) {
 
-    homeDetails = new Map()
-
-    for (let prop in obj) {
-
-        if (typeof obj[prop] !== "object") {
-            if (prop.includes("name") && !prop.includes("street")) {
-                homeDetails.set("mls_name", obj[prop])
-            }
+    //     if (typeof obj[prop] !== "object") {
+    //         if (prop.includes("name") && !prop.includes("street")) {
+    //             mapObj.set("mls_name", obj[prop])
+    //         }
     
-            if (prop.includes("id")) {
-                homeDetails.set("mls_id", obj[prop])
-            }
+    //         if (prop.includes("id")) {
+    //             mapObj.set("mls_id", obj[prop])
+    //         }
             
-            if (prop.includes("address")) {  
-                homeDetails.set("street_address", obj[prop])   //
-            }
+    //         if (prop.includes("address")) {  
+    //             mapObj.set("street_address", obj[prop])
+    //         }
 
-            if (prop.includes("city")) {
-                homeDetails.set("city", obj[prop])
-            }
+    //         if (prop.includes("city")) {
+    //             mapObj.set("city", obj[prop])
+    //         }
 
-            if (prop.includes("state")) {
-                homeDetails.set("state", obj[prop])
-            }
+    //         if (prop.includes("state")) {
+    //             mapObj.set("state", obj[prop])
+    //         }
 
-            if (prop.includes("zip")) {
-                homeDetails.set("zip_code", obj[prop])
-            }
+    //         if (prop.includes("zip")) {
+    //             mapObj.set("zip_code", obj[prop])
+    //         }
 
-            if (prop.includes("price") || prop.includes("list")) {
-                homeDetails.set("list_price", obj[prop])
-            }
+    //         if (prop.includes("price") || prop.includes("list")) {
+    //             mapObj.set("list_price", obj[prop])
+    //         }
 
-            if (prop.includes("date")) {
-                homeDetails.set("list_date", obj[prop])
-            }
+    //         if (prop.includes("date")) {
+    //             mapObj.set("list_date", obj[prop])
+    //         }
 
-            if (prop.includes("bed")) {
-                homeDetails.set("bedrooms", obj[prop])
-            }
+    //         if (prop.includes("bed")) {
+    //             mapObj.set("bedrooms", obj[prop])
+    //         }
     
-            if (prop.includes("bath") && !prop.includes("half")) {
-                homeDetails.set("full_baths", obj[prop])
-            }
+    //         if (prop.includes("bath") && !prop.includes("half")) {
+    //             mapObj.set("full_baths", obj[prop])
+    //         }
     
-            if (prop.includes("half")) {
-                homeDetails.set("half_baths", obj[prop])
-            }
+    //         if (prop.includes("half")) {
+    //             mapObj.set("half_baths", obj[prop])
+    //         }
 
-            if (prop.includes("square_feet")) {
-                homeDetails.set("size", obj[prop])
-            }
+    //         if (prop.includes("square_feet")) {
+    //             mapObj.set("size", obj[prop])
+    //         }
         
-        }
+    //     }
             
-    }
-    
-    return homeDetails
+    // }        
 }
 
-function buildJSON() {
-
+function buildJSON(input) {
+    let ans = flattenHomeObject(input)
+    console.log(ans)
 }
 
-mapEachHome(input1)
+buildJSON(input1)
