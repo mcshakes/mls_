@@ -76,57 +76,6 @@ function mapValueToObjKey(obj) {
 
     for (let prop in obj) {
 
-        // if (typeof obj[prop] !== "object") {
-        //     if (prop.includes("name") && !prop.includes("street")) {
-        //         mapObj.set("mls_name", obj[prop])
-        //     }
-    
-        //     if (prop.includes("id")) {
-        //         mapObj.set("mls_id", obj[prop])
-        //     }
-            
-        //     if (prop.includes("address")) {
-        //         let cleaned = cleanAddress(obj[prop]);
-        //         mapObj.set("street_address", cleaned)
-        //     }
-
-        //     if (prop.includes("city")) {
-        //         mapObj.set("city", obj[prop])
-        //     }
-
-        //     if (prop.includes("state")) {
-        //         mapObj.set("state", obj[prop])
-        //     }
-
-        //     if (prop.includes("zip")) {
-        //         mapObj.set("zip_code", parseInt(obj[prop]))
-        //     }
-
-        //     if (prop.includes("price") || prop.includes("list")) {
-        //         let price = fixPrice(obj[prop])
-        //         mapObj.set("list_price", price)
-        //     }
-
-        //     if (prop.includes("date") || prop.includes("created")) {
-        //         let date = normalizeDate(obj[prop])
-        //         mapObj.set("list_date", date)
-        //     }
-
-        //     if (prop.includes("bed")) {
-        //         mapObj.set("bedrooms", parseInt(obj[prop]))
-        //     }
-    
-        //     if (prop.includes("bath") && !prop.includes("half")) {
-        //         mapObj.set("full_baths", parseInt(obj[prop]))
-        //     }
-    
-        //     if (prop.includes("half")) {
-        //         mapObj.set("half_baths", parseInt(obj[prop]))
-        //     }
-
-        //     if (prop.includes("square_feet")) {
-        //         mapObj.set("size", parseInt(obj[prop]))
-        //     }
         if (typeof obj[prop] !== "object") {
             if (prop.includes("name") && !prop.includes("street")) {
                 homeObj.mls_name = obj[prop]
@@ -205,7 +154,7 @@ function buildJSON(input) {
 
     let jsObj = new homeData(renamed.mls_name, renamed.mls_id, renamed.street_address, renamed.city, renamed.state, renamed.zip_code, renamed.list_price, renamed.date, renamed.bedrooms, renamed.full_baths, renamed.half_baths, renamed.size)
 
-    console.log(renamed)
+    console.log(JSON.stringify(renamed))
 }
 
 buildJSON(input2)
